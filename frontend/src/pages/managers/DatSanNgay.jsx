@@ -3,7 +3,7 @@ import "../../css/DatSanNgay.css";
 import { Sidebar } from "../../components/Sidebar";
 import { Link } from "react-router";
 import { useNavigate } from "react-router"; // thêm đầu file
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 
 export function DatSanNgay() {
   const [zoomedImage, setZoomedImage] = useState(null); // lưu ảnh đang phóng to
@@ -412,9 +412,8 @@ export function DatSanNgay() {
             // thangCell.textContent = thangSlot.khach;
             thangCell.textContent =
               role === "khachhang" ? "Sân đặt tháng" : thangSlot.khach;
-            thangCell.style.gridColumn = `span ${
-              thangSlot.end - thangSlot.start
-            }`;
+            thangCell.style.gridColumn = `span ${thangSlot.end - thangSlot.start
+              }`;
             thangCell.style.backgroundColor = "#5cc9a7";
             thangCell.style.color = "#fff";
             thangCell.style.textAlign = "center";
@@ -436,52 +435,52 @@ export function DatSanNgay() {
           return i >= startIndex && i < endIndex;
         });
 
-if (bookedSlot) {
-  if (i === Math.floor((bookedSlot.GioVao.split(":")[0]*60 + Number(bookedSlot.GioVao.split(":")[1]) - openingHour*60)/slotMinutes)) {
-    const [startH, startM] = bookedSlot.GioVao.split(":").map(Number);
-    const [endH, endM] = bookedSlot.GioRa.split(":").map(Number);
-    const startIndex = Math.floor((startH*60 + startM - openingHour*60)/slotMinutes);
-    const endIndex = Math.floor((endH*60 + endM - openingHour*60)/slotMinutes);
+        if (bookedSlot) {
+          if (i === Math.floor((bookedSlot.GioVao.split(":")[0] * 60 + Number(bookedSlot.GioVao.split(":")[1]) - openingHour * 60) / slotMinutes)) {
+            const [startH, startM] = bookedSlot.GioVao.split(":").map(Number);
+            const [endH, endM] = bookedSlot.GioRa.split(":").map(Number);
+            const startIndex = Math.floor((startH * 60 + startM - openingHour * 60) / slotMinutes);
+            const endIndex = Math.floor((endH * 60 + endM - openingHour * 60) / slotMinutes);
 
-    const bookedCell = document.createElement("div");
-    bookedCell.className = "cell slot booked";
-    bookedCell.style.gridColumn = `span ${endIndex - startIndex}`;
-    bookedCell.style.backgroundColor = "#fa4f4fff";
-    bookedCell.style.color = "#ffffff";
-    bookedCell.style.borderRight = "1px solid #fff";
-    bookedCell.style.position = "relative";
+            const bookedCell = document.createElement("div");
+            bookedCell.className = "cell slot booked";
+            bookedCell.style.gridColumn = `span ${endIndex - startIndex}`;
+            bookedCell.style.backgroundColor = "#fa4f4fff";
+            bookedCell.style.color = "#ffffff";
+            bookedCell.style.borderRight = "1px solid #fff";
+            bookedCell.style.position = "relative";
 
-    // 🔹 Role khác nhau
-if (role === "khachhang") {
-  if (bookedSlot.MaKH !== maNguoiDung) {
-    bookedCell.textContent = "Đã đặt";
-  } else {
-    bookedCell.textContent = bookedSlot.KhachHang || "Bạn";
-    bookedCell.style.cursor = "pointer"; // hiện pointer
-    bookedCell.addEventListener("click", () =>
-      setSelectedBooking(bookedSlot)
-    );
-  }
-} else {
-  // Nhân viên/quản lý hiển thị tên khách
-  bookedCell.textContent = bookedSlot.KhachHang || "";
-  bookedCell.style.cursor = "pointer";
-  bookedCell.addEventListener("click", () => setSelectedBooking(bookedSlot));
-}
+            // 🔹 Role khác nhau
+            if (role === "khachhang") {
+              if (bookedSlot.MaKH !== maNguoiDung) {
+                bookedCell.textContent = "Đã đặt";
+              } else {
+                bookedCell.textContent = bookedSlot.KhachHang || "Bạn";
+                bookedCell.style.cursor = "pointer"; // hiện pointer
+                bookedCell.addEventListener("click", () =>
+                  setSelectedBooking(bookedSlot)
+                );
+              }
+            } else {
+              // Nhân viên/quản lý hiển thị tên khách
+              bookedCell.textContent = bookedSlot.KhachHang || "";
+              bookedCell.style.cursor = "pointer";
+              bookedCell.addEventListener("click", () => setSelectedBooking(bookedSlot));
+            }
 
 
-    // 🔔 Icon pending vẫn giữ
-    if (bookedSlot.TrangThai === "pending") {
-      const warningIcon = document.createElement("span");
-      warningIcon.className = "pending-icon";
-      warningIcon.innerHTML = "⚠️";
-      bookedCell.appendChild(warningIcon);
-    }
+            // 🔔 Icon pending vẫn giữ
+            if (bookedSlot.TrangThai === "pending") {
+              const warningIcon = document.createElement("span");
+              warningIcon.className = "pending-icon";
+              warningIcon.innerHTML = "⚠️";
+              bookedCell.appendChild(warningIcon);
+            }
 
-    row.appendChild(bookedCell);
-  }
-  continue;
-}
+            row.appendChild(bookedCell);
+          }
+          continue;
+        }
 
 
         // Ô trống để chọn
@@ -611,59 +610,59 @@ if (role === "khachhang") {
       {/* Modal thông tin booking cho quản lý */}
       {selectedBooking && (
         (role === "nhanvien" || selectedBooking.MaKH === maNguoiDung) && (
-        <div className="booking-modal" onClick={() => setSelectedBooking(null)}>
-          <div
-            className="booking-modal-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="modal-header">
-              <h3>Thông tin đặt sân</h3>
-              <button
-                className="close-btn"
-                onClick={() => setSelectedBooking(null)}
-              >
-                &times;
-              </button>
-            </div>
-            <div className="modal-body">
-              <p>
-                <strong>MaDatSan:</strong> {selectedBooking.MaDatSan}
-              </p>
-              <p>
-                <strong>MaSan:</strong> {selectedBooking.MaSan}
-              </p>
-              <p>
-                <strong>Khách hàng:</strong> {selectedBooking.KhachHang}
-              </p>
-              <p>
-                <strong>Ngày:</strong> {selectedBooking.NgayLap?.split("T")[0]}
-              </p>
-              <p>
-                <strong>Giờ vào:</strong> {selectedBooking.GioVao}
-              </p>
-              <p>
-                <strong>Giờ ra:</strong> {selectedBooking.GioRa}
-              </p>
-              <p>
-                <strong>Tổng tiền:</strong>{" "}
-                {selectedBooking.TongTien?.toLocaleString("vi-VN")} đ
-              </p>
-              <p>
-                <strong>Trạng thái:</strong> {selectedBooking.TrangThai}
-              </p>
-              <p>
-                <strong>Ghi chú:</strong> {selectedBooking.GhiChu || "Không có"}
-              </p>
-              {selectedBooking.PaymentScreenshot && (
-                <img
-                  src={`${BASE_URL}/uploads/payments/${selectedBooking.PaymentScreenshot}`}
-                  alt="Payment"
-                  style={{ width: "100%", marginTop: "10px" }}
-                />
-              )}
+          <div className="booking-modal" onClick={() => setSelectedBooking(null)}>
+            <div
+              className="booking-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="modal-header">
+                <h3>Thông tin đặt sân</h3>
+                <button
+                  className="close-btn"
+                  onClick={() => setSelectedBooking(null)}
+                >
+                  &times;
+                </button>
+              </div>
+              <div className="modal-body">
+                <p>
+                  <strong>MaDatSan:</strong> {selectedBooking.MaDatSan}
+                </p>
+                <p>
+                  <strong>MaSan:</strong> {selectedBooking.MaSan}
+                </p>
+                <p>
+                  <strong>Khách hàng:</strong> {selectedBooking.KhachHang}
+                </p>
+                <p>
+                  <strong>Ngày:</strong> {selectedBooking.NgayLap?.split("T")[0]}
+                </p>
+                <p>
+                  <strong>Giờ vào:</strong> {selectedBooking.GioVao}
+                </p>
+                <p>
+                  <strong>Giờ ra:</strong> {selectedBooking.GioRa}
+                </p>
+                <p>
+                  <strong>Tổng tiền:</strong>{" "}
+                  {selectedBooking.TongTien?.toLocaleString("vi-VN")} đ
+                </p>
+                <p>
+                  <strong>Trạng thái:</strong> {selectedBooking.TrangThai}
+                </p>
+                <p>
+                  <strong>Ghi chú:</strong> {selectedBooking.GhiChu || "Không có"}
+                </p>
+                {selectedBooking.PaymentScreenshot && (
+                  <img
+                    src={`${BASE_URL}/uploads/payments/${selectedBooking.PaymentScreenshot}`}
+                    alt="Payment"
+                    style={{ width: "100%", marginTop: "10px" }}
+                  />
+                )}
+              </div>
             </div>
           </div>
-        </div>
         )
       )}
 

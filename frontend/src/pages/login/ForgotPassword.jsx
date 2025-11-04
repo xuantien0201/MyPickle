@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import { Link } from "react-router-dom";
 import "../../css/ForgotPassword.css";
 
@@ -31,8 +31,8 @@ export default function ForgotPassword() {
           role === "employee"
             ? "Nhân viên"
             : role === "Quản lý"
-            ? "Quản lý"
-            : "Khách hàng",
+              ? "Quản lý"
+              : "Khách hàng",
         email,
         maTK,
         newPassword,

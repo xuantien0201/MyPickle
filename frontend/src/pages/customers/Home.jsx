@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import ProductCard from "../../components/ProductCard";
 import "../../css/Home.css";
 
@@ -85,7 +85,7 @@ const Home = () => {
 
         <div className="hero-image">
           <img
-            src="http://localhost:3000/uploads/categories/Huong-dan-cach-chon-vot-Pickleball-phu-hop-va-chuan-nhat-Hoc-Vien-VNTA-8.webp"
+            src={`${import.meta.env.VITE_API_URL}/uploads/categories/Huong-dan-cach-chon-vot-Pickleball-phu-hop-va-chuan-nhat-Hoc-Vien-VNTA-8.webp`}
             alt="Dụng cụ Pickleball cao cấp"
           />
         </div>

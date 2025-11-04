@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import "../../css/CaLamPage.css"; // đổi tên file CSS
 import { Link } from "react-router-dom";
 export default function CaLam() {
@@ -203,7 +203,7 @@ export default function CaLam() {
         {/* Form đăng ký ca làm */}
         <form className="calam-card" onSubmit={handleSubmit}>
           <div className="calam-head">
-            
+
             <div>
               <h1>Đăng ký ca làm theo tuần</h1>
             </div>
@@ -228,8 +228,8 @@ export default function CaLam() {
                 Gửi đăng ký
               </button>
               <Link to="/" className="calam-btn calam-back-btn">
-    Trang Chủ
-  </Link>
+                Trang Chủ
+              </Link>
             </div>
           </div>
 

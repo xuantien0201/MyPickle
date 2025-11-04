@@ -4,7 +4,7 @@ import "../../css/XacNhanDatSan.css";
 import mbBank from "../../images/mb-bank.jpg";
 import { useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import axios from "axios"; // đảm bảo có import axios
+import axios from "../../utils/axiosConfig";
 
 export function XacNhanDatSan() {
   const navigate = useNavigate();
@@ -1227,7 +1227,7 @@ export function XacNhanDatSan() {
                               (sum, dv) =>
                                 sum +
                                 (dv.qty || dv.soLuong || 1) *
-                                  (dv.price || dv.gia || 0),
+                                (dv.price || dv.gia || 0),
                               0
                             )
                             .toLocaleString()}

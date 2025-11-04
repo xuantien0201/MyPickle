@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import "../../css/LoginPage.css"; // đổi tên file CSS
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -57,13 +57,12 @@ export default function Login() {
 
   return (
     <div
-      className={`login-bg ${
-        role === "employee"
+      className={`login-bg ${role === "employee"
           ? "login-employee-mode"
           : role === "Quản lý"
-          ? "login-admin-mode"
-          : "login-customer-mode"
-      }`}
+            ? "login-admin-mode"
+            : "login-customer-mode"
+        }`}
     >
       <div className="login-pickleball-ball"></div>
       <div className="login-card animate-pop">
@@ -78,8 +77,8 @@ export default function Login() {
             {role === "customer"
               ? "Đăng nhập để cùng ra sân!"
               : role === "employee"
-              ? "Chào mừng nhân viên trở lại!"
-              : "Xin chào Quản lý!"}
+                ? "Chào mừng nhân viên trở lại!"
+                : "Xin chào Quản lý!"}
           </p>
         </div>
 
@@ -129,8 +128,8 @@ export default function Login() {
             {role === "employee"
               ? "Đăng nhập nhân viên"
               : role === "Quản lý"
-              ? "Đăng nhập quản lý"
-              : "Đăng nhập khách hàng"}
+                ? "Đăng nhập quản lý"
+                : "Đăng nhập khách hàng"}
           </button>
         </form>
 

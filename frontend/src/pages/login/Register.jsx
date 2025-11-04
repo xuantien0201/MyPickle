@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axios from "../../utils/axiosConfig";
 import { Link } from "react-router-dom";
 import "../../css/Register.css";
 
@@ -9,7 +9,7 @@ export default function Register() {
   const [passWord, setPassWord] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [sdt, setSDT] = useState("");
-const [tenKh, setTenKh] = useState("");
+  const [tenKh, setTenKh] = useState("");
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -32,12 +32,12 @@ const [tenKh, setTenKh] = useState("");
 
     try {
       const res = await axios.post("http://localhost:3000/api/admin/taikhoan/registerKhachHang", {
-  userName,
-  passWord,
-  email,
-  sdt,
-  tenKh
-});
+        userName,
+        passWord,
+        email,
+        sdt,
+        tenKh
+      });
 
       alert(res.data.message);
       if (res.data.success) window.location.href = "/login";
@@ -59,11 +59,11 @@ const [tenKh, setTenKh] = useState("");
             onChange={(e) => setUserName(e.target.value)}
           />
           <input
-  type="text"
-  placeholder="Họ và tên"
-  value={tenKh}
-  onChange={(e) => setTenKh(e.target.value)}
-/>
+            type="text"
+            placeholder="Họ và tên"
+            value={tenKh}
+            onChange={(e) => setTenKh(e.target.value)}
+          />
           <input
             type="email"
             placeholder="Email"
