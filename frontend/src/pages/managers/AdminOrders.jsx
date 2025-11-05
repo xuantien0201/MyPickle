@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../../utils/axiosConfig';
 import '../../css/AdminOrders.css';
 import { Sidebar } from '../../components/Sidebar';
 

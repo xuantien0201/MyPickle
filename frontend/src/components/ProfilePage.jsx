@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import PurchaseHistory from '../pages/customers/PurchaseHistory'; // Import PurchaseHistory
 import './ProfilePage.css';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
@@ -70,7 +70,7 @@ const ProfilePage = () => {
 
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_API_URL}/api/admin/taikhoan/customer/profile?id=${customerId}`
+          `/api/admin/taikhoan/customer/profile?id=${customerId}`
         );
         if (response.data.success) {
           setCustomerInfo(response.data.customer);
@@ -102,7 +102,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/admin/taikhoan/customer/profile/update?id=${customerInfo.id}`,
+        `/api/admin/taikhoan/customer/profile/update?id=${customerInfo.id}`,
         formData
       );
       if (response.data.success) {
