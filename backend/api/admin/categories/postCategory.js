@@ -8,7 +8,7 @@ router.post('/', categoryUpload.single('image'), async (req, res) => {
     try {
         const { name, slug } = req.body;
         const imageUrl = req.file
-            ? `${req.protocol}://${req.get('host')}/${req.file.path.replace(/\\/g, "/")}`
+            ? `/${req.file.path.replace(/\\/g, "/")}`
             : (req.body.image_url || null);
 
         const [result] = await db.query(

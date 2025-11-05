@@ -4,7 +4,7 @@ import "../../css/QuanLyCaLamPage.css";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function QuanLyCaLam() {
-  const API = "http://localhost:3000/api/admin/calam";
+  const API = `${import.meta.env.VITE_API_URL}/api/admin/calam`;
   const shiftOptions = ["Sáng", "Chiều", "Tối", "Nghỉ"];
 
   const [calamList, setCalamList] = useState([]);

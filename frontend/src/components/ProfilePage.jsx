@@ -70,7 +70,7 @@ const ProfilePage = () => {
 
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/admin/taikhoan/customer/profile?id=${customerId}`
+          `${import.meta.env.VITE_API_URL}/api/admin/taikhoan/customer/profile?id=${customerId}`
         );
         if (response.data.success) {
           setCustomerInfo(response.data.customer);
@@ -102,7 +102,7 @@ const ProfilePage = () => {
   const handleSave = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:3000/api/admin/taikhoan/customer/profile/update?id=${customerInfo.id}`,
+        `${import.meta.env.VITE_API_URL}/api/admin/taikhoan/customer/profile/update?id=${customerInfo.id}`,
         formData
       );
       if (response.data.success) {

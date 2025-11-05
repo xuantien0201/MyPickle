@@ -4,7 +4,7 @@ import "../../css/QuanLyTaiKhoanPage.css";
 import { Sidebar } from "../../components/Sidebar";
 
 export default function TaiKhoan() {
-  const API = "http://localhost:3000/api/admin/taikhoan";
+  const API = `${import.meta.env.VITE_API_URL}/api/admin/taikhoan`;
   const [accounts, setAccounts] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({

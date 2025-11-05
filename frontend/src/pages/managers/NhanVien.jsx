@@ -25,7 +25,7 @@ export function NhanVien() {
 
   const fetchNhanVien = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/admin/nhanvien");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/nhanvien`);
       const formattedData = res.data.map((nv) => ({
         ...nv,
         ngaySinh: nv.ngaySinh ? nv.ngaySinh.split("T")[0] : "",
@@ -42,7 +42,7 @@ export function NhanVien() {
     setSearch(q);
     if (q.trim() === "") return fetchNhanVien();
     try {
-      const res = await axios.get(`http://localhost:3000/api/admin/nhanvien/search?q=${q}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/admin/nhanvien/search?q=${q}`);
       setNhanVienList(res.data);
     } catch (err) {
       console.error("❌ Lỗi khi tìm kiếm:", err);
@@ -61,10 +61,10 @@ export function NhanVien() {
 
     try {
       if (editing) {
-        await axios.put("http://localhost:3000/api/admin/nhanvien", form);
+        await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/nhanvien`, form);
         alert("✅ Cập nhật nhân viên thành công!");
       } else {
-        await axios.post("http://localhost:3000/api/admin/nhanvien", form);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/nhanvien`, form);
         alert("✅ Thêm nhân viên thành công!");
       }
       fetchNhanVien();
@@ -100,7 +100,7 @@ export function NhanVien() {
   const handleDelete = async (maNV) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa nhân viên này không?")) return;
     try {
-      await axios.delete(`http://localhost:3000/api/admin/nhanvien/${maNV}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/nhanvien/${maNV}`);
       alert("✅ Xóa nhân viên thành công!");
       fetchNhanVien();
     } catch (err) {

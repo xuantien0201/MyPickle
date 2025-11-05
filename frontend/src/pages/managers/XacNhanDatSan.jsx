@@ -109,7 +109,7 @@ export function XacNhanDatSan() {
 
   console.log("userRole:", userRole, "maNguoiDung:", userId);
 
-  const API_BASE = "http://localhost:3000/api/admin/khachhang";
+  const API_BASE = `${import.meta.env.VITE_API_URL}/api/admin/khachhang`;
   const typingTimeout = useRef(null);
 
   useEffect(() => {
@@ -544,7 +544,7 @@ export function XacNhanDatSan() {
         console.log("✅ Dữ liệu gửi API đặt sân tháng:", reqBody);
 
         // 🚀 Gửi API
-        const res = await fetch("http://localhost:3000/api/admin/santhang/book", {
+        const res = await fetch("${import.meta.env.VITE_API_URL}/api/admin/santhang/book", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(reqBody),
@@ -720,7 +720,7 @@ export function XacNhanDatSan() {
             formData.append("PaymentScreenshot", reqBody.PaymentScreenshot);
           }
 
-          const res = await fetch("http://localhost:3000/api/admin/san/book", {
+          const res = await fetch("${import.meta.env.VITE_API_URL}/api/admin/san/book", {
             method: "POST",
             body: formData,
           });

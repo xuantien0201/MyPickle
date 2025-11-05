@@ -9,7 +9,7 @@ router.post('/', productUpload.single('image'), async (req, res) => {
         const { name, description, price, original_price, category, colors, stock, is_new, discount_percent } = req.body;
 
         const imageUrl = req.file
-            ? `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`
+            ? `/uploads/products/${req.file.filename}`
             : (req.body.image_url || null);
 
         const productData = {

@@ -26,7 +26,7 @@ router.put('/:id', categoryUpload.single('image'), async (req, res) => {
                 }
             }
 
-            imageUrl = `${req.protocol}://${req.get('host')}/${req.file.path.replace(/\\/g, "/")}`;
+            imageUrl = `/${req.file.path.replace(/\\/g, "/")}`;
         }
 
         await db.query(

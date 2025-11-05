@@ -74,7 +74,7 @@ export function TTXeVe() {
   console.log("📦 Dữ liệu nhận tại TTXeVe:", bookingData);
 
   // ✅ Đường dẫn API chuẩn REST
-  const API_BASE = "http://localhost:3000/api/admin";
+  const API_BASE = `${import.meta.env.VITE_API_URL}/api/admin`;
   const API_KHACHHANG = `${API_BASE}/khachhang`;
   const API_DATVE = `${API_BASE}/xeve/datve`;
 
@@ -181,9 +181,9 @@ export function TTXeVe() {
       alert("🎉 Thanh toán & đặt vé thành công!");
       console.log("✅ Kết quả đặt vé:", dataDatVe);
 
-      if(role === 'khach')
+      if (role === 'khach')
         navigate("/");
-      else  navigate("/qlyxeve");
+      else navigate("/qlyxeve");
     } catch (err) {
       console.error("❌ Lỗi khi xác nhận thanh toán:", err);
       alert(err.message || "Đã xảy ra lỗi, vui lòng thử lại!");
@@ -323,10 +323,10 @@ export function TTXeVe() {
                   {m === "tt-qr"
                     ? "QR Pay"
                     : m === "tt-vnpay"
-                    ? "VNPay"
-                    : m === "tt-zalopay"
-                    ? "ZaloPay"
-                    : "Tiền mặt"}
+                      ? "VNPay"
+                      : m === "tt-zalopay"
+                        ? "ZaloPay"
+                        : "Tiền mặt"}
                 </button>
               ))}
             </div>

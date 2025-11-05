@@ -31,7 +31,7 @@ export default function Register() {
     }
 
     try {
-      const res = await axios.post("http://localhost:3000/api/admin/taikhoan/registerKhachHang", {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/taikhoan/registerKhachHang`, {
         userName,
         passWord,
         email,

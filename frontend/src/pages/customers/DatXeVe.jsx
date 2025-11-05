@@ -14,7 +14,7 @@ export function DatXeVe() {
   useEffect(() => {
     const fetchXeVe = async () => {
       try {
-        const res = await fetch("http://localhost:3000/api/admin/xeve/sukien");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/admin/xeve/sukien`);
         const data = await res.json();
         setEvents(data);
         setFilteredEvents(data); // mặc định hiển thị tất cả

@@ -19,7 +19,7 @@ export function SuaXeVe({ MaXeVe, onClose, onUpdated }) {
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/admin/xeve/sukien/getXeVeById/${MaXeVe}`
+          `${import.meta.env.VITE_API_URL}/api/admin/xeve/sukien/getXeVeById/${MaXeVe}`
         );
         if (!res.ok) throw new Error("Không thể tải dữ liệu sự kiện");
 
@@ -85,7 +85,7 @@ export function SuaXeVe({ MaXeVe, onClose, onUpdated }) {
     try {
       setIsLoading(true);
       const res = await fetch(
-        `http://localhost:3000/api/admin/xeve/sukien/${MaXeVe}`, // ✅ Đúng URL
+        `${import.meta.env.VITE_API_URL}/api/admin/xeve/sukien/${MaXeVe}`, // ✅ Đúng URL
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

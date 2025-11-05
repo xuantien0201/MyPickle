@@ -24,7 +24,7 @@ router.put('/:id', productUpload.single('image'), async (req, res) => {
                     console.error("Lỗi khi xóa ảnh sản phẩm cũ (Admin):", e);
                 }
             }
-            imageUrl = `${req.protocol}://${req.get('host')}/uploads/products/${req.file.filename}`;
+            imageUrl = `/uploads/products/${req.file.filename}`;
         }
 
         const productData = {

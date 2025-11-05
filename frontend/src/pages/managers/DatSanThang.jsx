@@ -18,20 +18,20 @@ export function DatSanThang() {
   let isKhachHang = false;
 
   if (currentUser?.role === "Nhân viên" || currentUser?.role === "Quản lý") {
-  role = "nhanvien";
-  maNguoiDung = currentUser.maNV;
-  isKhachHang = false;
-  console.log("🔹 Đang đăng nhập với vai trò:", currentUser.role);
-  console.log("Mã nhân viên:", maNguoiDung);
-} else if (currentUser?.MaKH) {  // ✅ Sử dụng MaKH
-  role = "khachhang";
-  maNguoiDung = currentUser.MaKH; // ✅ MaKH, không phải id
-  isKhachHang = true;
-  console.log("🔹 Khách hàng đăng nhập:");
-  console.log("Mã KH:", currentUser.MaKH);
-  console.log("Tên KH:", currentUser.TenKh);
-  console.log("SĐT:", currentUser.SDT);
-}
+    role = "nhanvien";
+    maNguoiDung = currentUser.maNV;
+    isKhachHang = false;
+    console.log("🔹 Đang đăng nhập với vai trò:", currentUser.role);
+    console.log("Mã nhân viên:", maNguoiDung);
+  } else if (currentUser?.MaKH) {  // ✅ Sử dụng MaKH
+    role = "khachhang";
+    maNguoiDung = currentUser.MaKH; // ✅ MaKH, không phải id
+    isKhachHang = true;
+    console.log("🔹 Khách hàng đăng nhập:");
+    console.log("Mã KH:", currentUser.MaKH);
+    console.log("Tên KH:", currentUser.TenKh);
+    console.log("SĐT:", currentUser.SDT);
+  }
 
   // ===== Khách hàng =====
   const [customerName, setCustomerName] = useState("");
@@ -41,7 +41,7 @@ export function DatSanThang() {
   const [searchSdt, setSearchSdt] = useState([]);
   const typingTimeout = useRef(null);
 
-  const API_BASE = "http://localhost:3000/api/admin/khachhang";
+  const API_BASE = `${import.meta.env.VITE_API_URL}/api/admin/khachhang`;
 
   const timKiemKhachHang = async (tuKhoa, type) => {
     if (!tuKhoa.trim())
@@ -233,10 +233,10 @@ export function DatSanThang() {
 
     // 🔹 Nếu là khách đăng nhập
     if (isKhachHang) {
-  customerId = maNguoiDung;
-  name = currentUser?.TenKh || "Khách hàng tự đặt";
-  phone = currentUser?.SDT || "";
-}
+      customerId = maNguoiDung;
+      name = currentUser?.TenKh || "Khách hàng tự đặt";
+      phone = currentUser?.SDT || "";
+    }
     // 🔹 Nếu là nhân viên/QL thì bắt buộc nhập thông tin khách
     else {
       if (!name.trim() || !phone.trim()) {
@@ -330,7 +330,7 @@ export function DatSanThang() {
       {role !== 'khachhang' && (
         <Sidebar />
       )}
-      
+
 
       <div className="santhang-content">
         <div className="inside-st-content">

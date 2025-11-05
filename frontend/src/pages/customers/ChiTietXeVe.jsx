@@ -21,7 +21,7 @@ export function ChiTietXeVe() {
     );
   }
 
-  
+
 
   const totalSlots = event.SoLuongToiDa || 0;
   const bookedSlots = event.TongSoNguoi || 0;
@@ -35,7 +35,7 @@ export function ChiTietXeVe() {
   const MaKH = location.state?.MaKH || "KH002"; // fallback = KH002
 
   // console.log("Role la: " + role);
-  
+
 
   const price = Number(event.GiaVe || 100000);
   const total = price * quantity;
@@ -64,7 +64,7 @@ export function ChiTietXeVe() {
     const fetchKhachHang = async () => {
       try {
         const res = await fetch(
-          `http://localhost:3000/api/khachhang/idsearch?MaKH=${MaKH}`
+          `${import.meta.env.VITE_API_URL}/api/khachhang/idsearch?MaKH=${MaKH}`
         );
         const data = await res.json();
 
