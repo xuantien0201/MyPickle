@@ -36,6 +36,7 @@
   });
 
   const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`🚀 Server chạy tại http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 Server chạy tại http://0.0.0.0:${PORT}`);
+    console.log(`🚀 External URL: https://${process.env.RAILWAY_STATIC_URL || 'your-railway-app.up.railway.app'}`);
   });
