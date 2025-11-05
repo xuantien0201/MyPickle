@@ -85,7 +85,7 @@ const Home = () => {
 
         <div className="hero-image">
           <img
-            src={import.meta.env.DEV ? `/uploads/categories/Huong-dan-cach-chon-vot-Pickleball-phu-hop-va-chuan-nhat-Hoc-Vien-VNTA-8.webp` : `${import.meta.env.VITE_API_URL}/uploads/categories/Huong-dan-cach-chon-vot-Pickleball-phu-hop-va-chuan-nhat-Hoc-Vien-VNTA-8.webp`}
+            src={`${import.meta.env.VITE_API_URL}/uploads/categories/Huong-dan-cach-chon-vot-Pickleball-phu-hop-va-chuan-nhat-Hoc-Vien-VNTA-8.webp`}
             alt="Dụng cụ Pickleball cao cấp"
           />
         </div>
