@@ -8,17 +8,5 @@
             "source": "/((?!api/).*)",
             "destination": "/index.html"
         }
-    ],
-    "builds": [
-        {
-            "src": "backend/server.js",
-            "use": "@vercel/node"
-        }
-    ],
-    "routes": [
-        {
-            "src": "/backend/(.*)",
-            "dest": "/backend/server.js"
-        }
     ]
 }
