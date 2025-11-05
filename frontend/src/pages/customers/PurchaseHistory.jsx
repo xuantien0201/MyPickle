@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
+import axios from '../../utils/axiosConfig';
 import '../../css/AdminOrders.css'; // Tái sử dụng CSS của trang Admin
 import '../../css/PurchaseHistory.css'; // CSS riêng nếu cần ghi đè
 
@@ -64,7 +64,7 @@ const PurchaseHistory = () => {
             }
 
             try {
-                const response = await axios.get(`http://localhost:3000/api/client/orders/history?customerId=${customerId}`);
+                const response = await axios.get(`/api/client/orders/history?customerId=${customerId}`);
                 setOrders(response.data);
             } catch (err) {
                 console.error('Lỗi khi lấy lịch sử đơn hàng:', err);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import axios from 'axios';
+import axios from '../../utils/axiosConfig';
 import '../../css/Checkout.css';
 
 const Checkout = () => {
@@ -31,7 +31,7 @@ const Checkout = () => {
           if (khach.role === "khachhang" && khach.MaKH) { // Thay đổi: Điều kiện kiểm tra vai trò và ID khách hàng
             setIsLoggedIn(true);
             setCustomerId(khach.MaKH); // Lưu customerId vào state
-            const response = await axios.get(`http://localhost:3000/api/admin/taikhoan/customer/profile?id=${khach.MaKH}`); // Thay đổi: Sử dụng khach.MaKH
+            const response = await axios.get(`/api/admin/taikhoan/customer/profile?id=${khach.MaKH}`); // Thay đổi: Sử dụng khach.MaKH
             if (response.data.success) {
               const customer = response.data.customer;
               let address = customer.DiaChi || '';
@@ -96,7 +96,7 @@ const Checkout = () => {
 
       console.log("Dữ liệu đơn hàng gửi đi:", orderData); // THÊM DÒNG NÀY ĐỂ KIỂM TRA
 
-      const response = await axios.post('http://localhost:3000/api/client/orders', orderData); // Đảm bảo URL đầy đủ
+      const response = await axios.post('/api/client/orders', orderData); // Đảm bảo URL đầy đủ
 
       if (response.data.orderCode) {
         await clearCart();
