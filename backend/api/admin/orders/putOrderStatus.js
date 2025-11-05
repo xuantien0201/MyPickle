@@ -4,24 +4,27 @@ import { db } from '../../../config/db.js';
 const router = express.Router();
 
 router.put('/:id/status', async (req, res) => {
-  await db.beginTransaction();
+  const connection = await db.getConnection();
+  await connection.beginTransaction();
   try {
     const { status: newStatus } = req.body;
     const { id: orderId } = req.params;
 
     if (!newStatus) {
-      await db.rollback();
+      await connection.rollback();
+      connection.release();
       return res.status(400).json({ error: 'Trạng thái mới là bắt buộc.' });
     }
 
     // 1️⃣ Lấy trạng thái hiện tại
-    const [[currentOrder]] = await db.query(
+    const [[currentOrder]] = await connection.query(
       'SELECT status FROM orders WHERE id = ? FOR UPDATE',
       [orderId]
     );
 
     if (!currentOrder) {
-      await db.rollback();
+      await connection.rollback();
+      connection.release();
       return res.status(404).json({ error: 'Không tìm thấy đơn hàng.' });
     }
 
@@ -41,18 +44,17 @@ router.put('/:id/status', async (req, res) => {
       giao_that_bai: [],
     };
 
-
-
     const allowedNext = allowedTransitions[oldStatus] || [];
     if (!allowedNext.includes(newStatus)) {
-      await db.rollback();
+      await connection.rollback();
+      connection.release();
       return res.status(400).json({
         error: `Không thể chuyển từ trạng thái "${oldStatus}" sang "${newStatus}".`,
       });
     }
 
     // 3️⃣ Lấy sản phẩm trong đơn
-    const [orderItems] = await db.query(
+    const [orderItems] = await connection.query(
       `SELECT oi.product_id, oi.quantity, p.name, p.stock
        FROM order_items oi
        JOIN products p ON oi.product_id = p.id
@@ -68,7 +70,7 @@ router.put('/:id/status', async (req, res) => {
         const productId = parseInt(item.product_id, 10);
         if (isNaN(productId)) continue;
 
-        const [[product]] = await db.query(
+        const [[product]] = await connection.query(
           'SELECT stock, name FROM products WHERE id = ? FOR UPDATE',
           [productId]
         );
@@ -81,7 +83,7 @@ router.put('/:id/status', async (req, res) => {
               `Không đủ hàng tồn kho cho sản phẩm "${product.name}". Chỉ còn ${product.stock} sản phẩm.`
             );
           }
-          await db.query('UPDATE products SET stock = stock - ? WHERE id = ?', [
+          await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [
             item.quantity,
             productId,
           ]);
@@ -91,7 +93,7 @@ router.put('/:id/status', async (req, res) => {
           stockMessages.push(msg);
           console.log('[KHO]', msg);
         } else if (operation === 'return') {
-          await db.query('UPDATE products SET stock = stock + ? WHERE id = ?', [
+          await connection.query('UPDATE products SET stock = stock + ? WHERE id = ?', [
             item.quantity,
             productId,
           ]);
@@ -116,18 +118,20 @@ router.put('/:id/status', async (req, res) => {
     }
 
     // 6️⃣ Cập nhật trạng thái
-    await db.query('UPDATE orders SET status = ? WHERE id = ?', [
+    await connection.query('UPDATE orders SET status = ? WHERE id = ?', [
       newStatus,
       orderId,
     ]);
 
-    await db.commit();
+    await connection.commit();
+    connection.release();
     return res.status(200).json({
       message: '✅ Cập nhật trạng thái đơn hàng thành công.',
       stockMessages,
     });
   } catch (error) {
-    await db.rollback();
+    await connection.rollback();
+    connection.release();
     console.error('Lỗi khi cập nhật trạng thái đơn hàng (Admin):', error);
     if (error.message.includes('Không đủ hàng tồn kho')) {
       return res.status(400).json({ error: error.message });

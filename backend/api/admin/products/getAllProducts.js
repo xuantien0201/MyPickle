@@ -44,7 +44,21 @@ router.get('/', async (req, res) => {
         }
 
         const [products] = await db.query(query, params);
-        res.json({ products, totalCount });
+
+        // Construct full image URLs dynamically
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        const productsWithFullUrls = products.map(product => {
+            let imageUrl = product.image_url;
+            if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+                imageUrl = `${baseUrl}${imageUrl}`;
+            }
+            return {
+                ...product,
+                image_url: imageUrl
+            };
+        });
+
+        res.json({ products: productsWithFullUrls, totalCount });
     } catch (error) {
         console.error('Lỗi khi lấy danh sách sản phẩm (Admin):', error);
         res.status(500).json({ error: 'Không thể lấy danh sách sản phẩm' });

@@ -12,7 +12,8 @@ router.put('/hangloat/status', async (req, res) => {
     if (!newStatus)
         return res.status(400).json({ error: 'Trạng thái mới là bắt buộc.' });
 
-    await db.beginTransaction();
+    const connection = await db.getConnection();
+    await connection.beginTransaction();
 
     try {
         const allowedTransitions = {
@@ -29,7 +30,7 @@ router.put('/hangloat/status', async (req, res) => {
         };
 
         // 1. Lấy tất cả đơn hàng
-        const [allSelectedOrders] = await db.query(
+        const [allSelectedOrders] = await connection.query(
             'SELECT id, status, order_code FROM orders WHERE id IN (?) FOR UPDATE',
             [orderIds]
         );
@@ -51,7 +52,8 @@ router.put('/hangloat/status', async (req, res) => {
         }
 
         if (validOrders.length === 0) {
-            await db.rollback();
+            await connection.rollback();
+            connection.release();
             return res.status(400).json({
                 error: 'Không có đơn hàng nào hợp lệ để cập nhật.',
                 invalidOrders,
@@ -61,7 +63,7 @@ router.put('/hangloat/status', async (req, res) => {
         const validOrderIds = validOrders.map(o => o.id);
 
         // 2. Lấy danh sách sản phẩm trong đơn
-        const [orderItems] = await db.query(
+        const [orderItems] = await connection.query(
             `SELECT oi.order_id, oi.product_id, oi.quantity, p.name
              FROM order_items oi
              JOIN products p ON oi.product_id = p.id
@@ -70,7 +72,7 @@ router.put('/hangloat/status', async (req, res) => {
         );
 
         const productIds = [...new Set(orderItems.map(item => item.product_id))];
-        const [products] = productIds.length > 0 ? await db.query(
+        const [products] = productIds.length > 0 ? await connection.query(
             'SELECT id, name, stock FROM products WHERE id IN (?) FOR UPDATE',
             [productIds]
         ) : [[]];
@@ -114,18 +116,19 @@ router.put('/hangloat/status', async (req, res) => {
         // 4. Cập nhật DB
         for (const [productId, change] of stockUpdates.entries()) {
             if (change === 0) continue;
-            await db.query(
+            await connection.query(
                 'UPDATE products SET stock = stock + ? WHERE id = ?',
                 [change, productId]
             );
         }
 
-        await db.query(
+        await connection.query(
             'UPDATE orders SET status = ? WHERE id IN (?)',
             [newStatus, validOrderIds]
         );
 
-        await db.commit();
+        await connection.commit();
+        connection.release();
 
         res.json({
             message: `✅ Cập nhật ${validOrders.length} đơn hàng thành công.`,
@@ -135,7 +138,8 @@ router.put('/hangloat/status', async (req, res) => {
         });
 
     } catch (error) {
-        await db.rollback();
+        await connection.rollback();
+        connection.release();
         console.error('Lỗi khi cập nhật hangloat status:', error);
         res.status(400).json({ error: error.message });
     }

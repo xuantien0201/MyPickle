@@ -23,7 +23,19 @@ router.get('/:id', async (req, res) => {
             return res.status(404).json({ message: 'Không tìm thấy sản phẩm' });
         }
 
-        res.json(products[0]);
+        // Construct full image URL dynamically
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        const product = products[0];
+        let imageUrl = product.image_url;
+        if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+            imageUrl = `${baseUrl}${imageUrl}`;
+        }
+        const productWithFullUrl = {
+            ...product,
+            image_url: imageUrl
+        };
+
+        res.json(productWithFullUrl);
     } catch (error) {
         console.error('Lỗi khi lấy chi tiết sản phẩm:', error);
         res.status(500).json({ error: 'Không thể lấy thông tin sản phẩm' });

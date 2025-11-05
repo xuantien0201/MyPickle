@@ -31,7 +31,21 @@ router.get('/', async (req, res) => {
         params.push(parseInt(limit), offset);
 
         const [categories] = await db.query(query, params);
-        res.json({ categories, totalCount });
+
+        // Construct full image URLs dynamically
+        const baseUrl = `${req.protocol}://${req.get('host')}`;
+        const categoriesWithFullUrls = categories.map(category => {
+            let imageUrl = category.image_url;
+            if (imageUrl && !imageUrl.startsWith('http://') && !imageUrl.startsWith('https://')) {
+                imageUrl = `${baseUrl}${imageUrl}`;
+            }
+            return {
+                ...category,
+                image_url: imageUrl
+            };
+        });
+
+        res.json({ categories: categoriesWithFullUrls, totalCount });
     } catch (error) {
         console.error('Lỗi khi lấy danh sách danh mục (Admin):', error);
         res.status(500).json({ error: 'Không thể lấy danh sách danh mục' });
