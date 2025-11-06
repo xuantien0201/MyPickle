@@ -69,7 +69,7 @@ const Home = () => {
           <div className="hero-text">
             <h1>
               <span>Đơn giản – Khác biệt</span>
-              <br />  
+              <br />
               Chơi hay hơn, vợt tốt hơn
             </h1>
             <p>
@@ -102,7 +102,7 @@ const Home = () => {
                 className={`category-card category-${index + 1}`}
               >
                 <img
-                  src={category.image_url}
+                  src={`${import.meta.env.VITE_API_URL}${category.image_url}`}
                   alt={category.name}
                   className="category-bg"
                 />
