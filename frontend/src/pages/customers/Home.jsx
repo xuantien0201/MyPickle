@@ -102,7 +102,7 @@ const Home = () => {
                 className={`category-card category-${index + 1}`}
               >
                 <img
-                  src={`${import.meta.env.VITE_API_URL}${category.image_url}`}
+                  src={category.image_url}
                   alt={category.name}
                   className="category-bg"
                 />
