@@ -67,11 +67,7 @@ export default function Login() {
       <div className="login-pickleball-ball"></div>
       <div className="login-card animate-pop">
         <div className="login-header">
-          <img
-            src="https://cdn-icons-png.flaticon.com/512/7067/7067361.png"
-            alt="Pickleball Logo"
-            className="login-logo"
-          />
+          
           <h2>Pickleball Bồ Đề</h2>
           <p>
             {role === "customer"
