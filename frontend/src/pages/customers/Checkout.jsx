@@ -225,7 +225,7 @@ const Checkout = () => {
             <div className="order-items">
               {cartItems.map((item) => (
                 <div key={item.product_id} className="order-item">
-                  <img src={item.image_url || '/images/placeholder.jpg'} alt={item.name} />
+                    <img src={item.image_url ? (item.image_url.startsWith('http') ? item.image_url : `${import.meta.env.VITE_API_URL}${item.image_url}`) : '/images/placeholder.jpg'} alt={item.name} />
                   <div className="item-details">
                     <h4>{item.name}</h4>
                     {item.color && <p>Màu: {item.color}</p>}
