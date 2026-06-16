@@ -1,4 +1,7 @@
 {
+  "name": "mypick-commerce",
+  "private": true,
+  "description": "MyPick ecommerce storefront integrated with Trevo.",
   "dependencies": {
     "dotenv": "^17.2.3"
   }
